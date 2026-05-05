@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrolled_Courses</title>
+</head>
+
+<style>
+table {
+    border-collapse: collapse;
+    width: 60%;
+}
+
+th {
+    background-color: beige;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+}
+.h2{
+    padding-left: 45%;
+}
+</style>
+<body onload="showcasee()">
+    
+     <h2 class="h2">Entrolle_Courses</h2>
+     
+    <table border="1px" align="center">
+       
+        <tr align="center" style="background-color: beige;">
+          <th width="150">Name</th>
+          <th width="200">EmailId</th>
+          <th width="150">Course Name</th>
+        </tr>
+
+        <tbody id="entrolltable" align="center"></tbody> 
+        
+    </table>
+
+    <script>
+            function showcasee(){
+              
+
+               fetch("http://localhost:8080/courses/entroll")
+               .then((Response)=>Response.json())
+               .then((students)=>{
+                const datatable=document.getElementById("entrolltable")
+
+                students.forEach(student => {
+                    var row =`<tr>
+                        <td>${student.name}</td> 
+                        <td>${student.emailId}</td>
+                        <td>${student.courseName}</td>
+                        </tr>`
+                            console.log(student);
+
+                            datatable.innerHTML+=row;
+                       
+                    
+                });
+                 
+
+               });
+            }
+
+        </script>
+</body>
+</html>

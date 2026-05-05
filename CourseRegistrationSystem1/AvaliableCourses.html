@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliable_Courses</title>
+</head>
+<style>
+table {
+    border-collapse: collapse;
+    width: 60%;
+}
+
+th {
+    background-color: beige;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+}
+.h2{
+    padding-left: 45%;
+}
+</style>
+
+<body onload="showcase()">
+    <h2 class="h2">Avaliable_Courses</h2>
+
+    <table border="1px" align="center">
+        <tr align="center" style="background-color: beige;">
+          <th width="150">CourseId</th>
+          <th width="150">CourseName</th>
+          <th width="150">Trainer</th>
+          <th width="150">Duration</th>
+          <th width="150">Fees</th>
+        </tr>
+
+        <tbody id="coursetable" align="center"></tbody> 
+        
+    </table>
+
+    <script>
+            function showcase(){
+              
+
+               fetch("http://localhost:8080/courses")
+               .then((Response)=>Response.json())
+               .then((courses)=>{
+                const datatable=document.getElementById("coursetable")
+
+                courses.forEach(course => {
+                    var row =`<tr>
+                        <td>${course.courseId}</td> 
+                        <td>${course.courseName}</td>
+                        <td>${course.trainer}</td>
+                        <td>${course.duration}</td>
+                        <td>${course.fees}</td>
+                        </tr>`
+                            console.log(courses);
+
+                            datatable.innerHTML+=row;
+                       
+                    
+                });
+                 
+
+               });
+            }
+
+        </script>
+</body>
+</html>
