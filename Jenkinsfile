@@ -53,7 +53,17 @@ pipeline {
 
        stage('Health Check') {
            steps {
-               bat 'C:\\Windows\\System32\\curl.exe --fail http://localhost:%APP_PORT%/actuator/health || exit /b 1'
+               bat '''
+                   C:\\Windows\\System32\\curl.exe -o NUL -s -w "%%{http_code}" http://localhost:%APP_PORT%/actuator/health > status.txt
+                   set /p STATUS=<status.txt
+                   echo App responded with HTTP status: %STATUS%
+                   if "%STATUS%"=="000" (
+                       echo App did not respond at all - deployment failed
+                       exit /b 1
+                   ) else (
+                       echo App is up and responding
+                   )
+               '''
            }
        }
     }
