@@ -1,6 +1,10 @@
-// ADD Jenkins Piplines
 pipeline {
     agent any
+
+    tools {
+        jdk 'JDK-25'
+        maven 'Maven-3.9.16'
+    }
 
     environment {
         APP_PORT = '9000'
@@ -41,7 +45,6 @@ pipeline {
                     echo Starting new application...
                     start /B java -jar target\\*.jar --server.port=%APP_PORT%
                 '''
-                // give the app a few seconds to boot before health check
                 sleep(time: 15, unit: 'SECONDS')
             }
         }
