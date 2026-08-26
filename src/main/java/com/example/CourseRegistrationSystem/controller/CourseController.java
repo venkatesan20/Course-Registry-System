@@ -15,7 +15,7 @@ public class CourseController {
     @Autowired
     CourseService service;
 
-
+    //this getmaping section and I check the automatic CICD test and build 
     @GetMapping("")
     public List<Course> Avaliablecourse(){
         return service.avalablecourse();
