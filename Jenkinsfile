@@ -35,25 +35,27 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                bat '''
-                    echo Stopping any process on port %APP_PORT%...
-                    for /f "tokens=5" %%a in ('netstat -aon ^| findstr :%APP_PORT% ^| findstr LISTENING') do (
-                        taskkill /F /PID %%a
-                    )
-                    echo Starting new application...
-                    start /B java -jar target\\*.jar --server.port=%APP_PORT%
-                '''
-                sleep(time: 15, unit: 'SECONDS')
-            }
-        }
+       stage('Deploy') {
+           steps {
+               bat '''
+                   echo Stopping any process on port %APP_PORT%...
+                   for /f "tokens=5" %%a in ('C:\\Windows\\System32\\netstat.exe -aon ^| findstr :%APP_PORT% ^| findstr LISTENING') do (
+                       taskkill /F /PID %%a
+                   )
 
-        stage('Health Check') {
-            steps {
-                bat 'curl --fail http://localhost:%APP_PORT%/actuator/health || exit /b 1'
-            }
-        }
+                   for /f %%f in ('dir /b target\\*.jar') do set JARFILE=%%f
+                   echo Starting new application: %JARFILE%
+                   start /B java -jar target\\%JARFILE%
+               '''
+               sleep(time: 15, unit: 'SECONDS')
+           }
+       }
+
+       stage('Health Check') {
+           steps {
+               bat 'C:\\Windows\\System32\\curl.exe --fail http://localhost:%APP_PORT%/actuator/health || exit /b 1'
+           }
+       }
     }
 
     post {
